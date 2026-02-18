@@ -61,7 +61,7 @@ class WimbledonToggleClass extends Component<Props> {
 
     // Play wind sound, looping softly while hovering
     this._hoverSfx = new Audio("/Audio/wind_sound.mp3");
-    this._hoverSfx.volume = 0.8;
+    this._hoverSfx.volume = 1.0;
     this._hoverSfx.loop = false;
     this._hoverSfx.play().catch(() => {});
 
