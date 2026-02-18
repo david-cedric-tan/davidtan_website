@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Box, Plane } from "@react-three/drei";
-import { Mesh } from "three";
+import { Mesh, MeshStandardMaterial } from "three";
 import { useStore } from "@/store/useStore";
 
 interface MonitorProps {
@@ -31,9 +31,8 @@ export function Monitor({ position }: MonitorProps) {
     }
 
     if (screenRef.current) {
-      // Screen glow effect
       const glowIntensity = 0.3 + Math.sin(state.clock.elapsedTime * 2) * 0.1;
-      screenRef.current.material.emissiveIntensity = glowIntensity;
+      (screenRef.current.material as MeshStandardMaterial).emissiveIntensity = glowIntensity;
     }
   });
 

@@ -46,7 +46,10 @@ class WimbledonToggleClass extends Component<Props> {
       this._hoverSfx.currentTime = 0;
       this._hoverSfx = null;
     }
-    const sfx = new Audio(this.props.on ? "/Audio/tennisball2.mp3" : "/Audio/tennisball1.mp3");
+    const sfx = new Audio(
+      this.props.on ? "/Audio/tennisball2.mp3" : "/Audio/tennisball1.mp3"
+    );
+    sfx.volume = 1.0;
     sfx.play().catch(() => {});
     this.props.onToggle();
   };
@@ -58,7 +61,7 @@ class WimbledonToggleClass extends Component<Props> {
 
     // Play wind sound, looping softly while hovering
     this._hoverSfx = new Audio("/Audio/wind_sound.mp3");
-    this._hoverSfx.volume = 0.3;
+    this._hoverSfx.volume = 0.8;
     this._hoverSfx.loop = false;
     this._hoverSfx.play().catch(() => {});
 

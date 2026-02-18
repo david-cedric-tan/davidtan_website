@@ -14,10 +14,10 @@ export function InfoPanel() {
       content: (
         <div className="space-y-4">
           <p className="text-david-gray leading-relaxed">
-            I'm a passionate developer and designer who loves creating immersive
-            digital experiences. With a background in both technical development
-            and creative design, I bridge the gap between functionality and
-            aesthetics.
+            Hiya! I'm David Tan, a highly motivated, multilingual, and adaptable
+            4th year student with a passion for emerging technologies in
+            Artificial Intelligence and financial markets, driven to make a
+            meaningful impact in the world of technology.
           </p>
           <div className="space-y-2">
             <h4 className="text-white font-semibold">Skills & Technologies</h4>
@@ -138,25 +138,27 @@ export function InfoPanel() {
           </p>
           <div className="space-y-3">
             <a
-              href="mailto:david@example.com"
+              href="mailto:davidcedrictan@gmail.com"
               className="flex items-center space-x-3 p-3 bg-david-dark/30 border border-david-gray/20 rounded-lg hover:border-david-teal/50 transition-colors"
             >
               <Mail className="w-5 h-5 text-david-teal" />
-              <span className="text-white">david@example.com</span>
+              <span className="text-white">davidcedrictan@gmail.com</span>
             </a>
             <a
-              href="https://github.com/davidtan"
+              href="https://github.com/david-cedric-tan"
               className="flex items-center space-x-3 p-3 bg-david-dark/30 border border-david-gray/20 rounded-lg hover:border-david-teal/50 transition-colors"
             >
               <Github className="w-5 h-5 text-david-teal" />
-              <span className="text-white">github.com/davidtan</span>
+              <span className="text-white">github.com/david-cedric-tan</span>
             </a>
             <a
-              href="https://linkedin.com/in/davidtan"
+              href="www.linkedin.com/in/david-cedric-t-45a74318b"
               className="flex items-center space-x-3 p-3 bg-david-dark/30 border border-david-gray/20 rounded-lg hover:border-david-teal/50 transition-colors"
             >
               <Linkedin className="w-5 h-5 text-david-teal" />
-              <span className="text-white">linkedin.com/in/davidtan</span>
+              <span className="text-white">
+                linkedin.com/in/davidcedricctan
+              </span>
             </a>
           </div>
         </div>

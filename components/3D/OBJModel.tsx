@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { Group } from "three";
 
 interface OBJModelProps {

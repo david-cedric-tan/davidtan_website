@@ -31,7 +31,7 @@ export function FloatingElements() {
     <group>
       {/* Floating Cube */}
       <Box
-        ref={(el) => el && (elementsRef.current[0] = el)}
+        ref={(el) => { if (el) elementsRef.current[0] = el; }}
         args={[0.1, 0.1, 0.1]}
         position={[2, 1, -3]}
       >
@@ -46,7 +46,7 @@ export function FloatingElements() {
 
       {/* Floating Sphere */}
       <Sphere
-        ref={(el) => el && (elementsRef.current[1] = el)}
+        ref={(el) => { if (el) elementsRef.current[1] = el; }}
         args={[0.08]}
         position={[-2, 1.5, -4]}
       >
@@ -61,7 +61,7 @@ export function FloatingElements() {
 
       {/* Floating Torus */}
       <Torus
-        ref={(el) => el && (elementsRef.current[2] = el)}
+        ref={(el) => { if (el) elementsRef.current[2] = el; }}
         args={[0.06, 0.02, 8, 16]}
         position={[1, 2, -2]}
       >
@@ -76,7 +76,7 @@ export function FloatingElements() {
 
       {/* Additional floating elements */}
       <Box
-        ref={(el) => el && (elementsRef.current[3] = el)}
+        ref={(el) => { if (el) elementsRef.current[3] = el; }}
         args={[0.05, 0.05, 0.05]}
         position={[-1, 0.8, -1]}
       >
@@ -90,7 +90,7 @@ export function FloatingElements() {
       </Box>
 
       <Sphere
-        ref={(el) => el && (elementsRef.current[4] = el)}
+        ref={(el) => { if (el) elementsRef.current[4] = el; }}
         args={[0.06]}
         position={[3, 1.2, -3]}
       >
