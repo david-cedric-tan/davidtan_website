@@ -3,8 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "David Tan - 3D Portfolio",
-  description:
-    "Interactive 3D portfolio showcasing David Tan's work and creativity",
+  description: "David Tan's 3D Portfolio",
   keywords: [
     "David Tan",
     "Portfolio",

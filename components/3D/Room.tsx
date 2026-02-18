@@ -3,14 +3,15 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Box, Cylinder, Plane } from "@react-three/drei";
-import { Mesh } from "three";
+import { Group } from "three";
 import { HardDrive } from "./HardDrive";
 import { Monitor } from "./Monitor";
 import { VinylRecord } from "./VinylRecord";
 import { FloatingElements } from "./FloatingElements";
+import { UWMonitor } from "./UltraWideMonitor";
 
 export function Room() {
-  const roomRef = useRef<Mesh>(null);
+  const roomRef = useRef<Group>(null);
 
   useFrame((state) => {
     if (roomRef.current) {
@@ -59,7 +60,7 @@ export function Room() {
 
       {/* Main Desk */}
       <Box args={[4, 0.1, 2]} position={[0, -0.5, -2]} castShadow receiveShadow>
-        <meshStandardMaterial color="#475569" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="white" roughness={0.6} metalness={0.2} />
       </Box>
 
       {/* Desk Legs */}
@@ -92,16 +93,26 @@ export function Room() {
       </Cylinder>
 
       {/* Interactive Objects */}
-      <HardDrive position={[0.5, -0.3, -1.5]} />
-      <Monitor position={[0, 0.2, -2]} />
+      {/* <HardDrive position={[0.5, -0.3, -1.5]} /> */}
+      <UWMonitor
+        position={[0, -0.13, -2]}
+        scale={[0.0025, 0.0025, 0.0025]}
+        rotation={[4.7, 0, 6.3]}
+      />
       <VinylRecord position={[3, -0.1, -1]} />
+
+      {/* Ambient light behind monitor - warm yellow/orange */}
+      <pointLight position={[0, -0.13, -2.5]} intensity={1.5} color="#FFE5B4" />
+      <pointLight position={[0, 0.2, -2.5]} intensity={1.0} color="#FFD89B" />
 
       {/* Floating Elements */}
       <FloatingElements />
 
       {/* Ambient Lighting Elements */}
-      <pointLight position={[0, 3, -2]} intensity={0.3} color="#0d9488" />
-      <pointLight position={[3, 2, -1]} intensity={0.2} color="#1e3a8a" />
+      <pointLight position={[0, 3, -2]} intensity={1.0} color="#0d9488" />
+      <pointLight position={[3, 2, -1]} intensity={0.8} color="#1e3a8a" />
+      <pointLight position={[-3, 2, -1]} intensity={0.8} color="#ffffff" />
+      <pointLight position={[0, 4, 0]} intensity={0.6} color="#ffffff" />
     </group>
   );
 }
