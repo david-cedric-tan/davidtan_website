@@ -12,7 +12,7 @@ export function BarebonesView() {
     <div className="min-h-screen bg-david-dark text-david-gray">
       {/* Simple header - same branding, no 3D deps */}
       <header className="border-b border-david-gray/20 bg-white/80 backdrop-blur-sm sticky top-0 z-30 overflow-visible">
-        <div className="max-w-5xl mx-auto px-8 py-8 flex items-center">
+        <div className="max-w-5xl mx-auto px-8 py-4 flex items-center">
           {/* Logo — identical to 3D nav */}
           <div className="flex items-center space-x-3 shrink-0">
             <div className="w-11 h-11 bg-gradient-to-br from-david-blue to-david-teal rounded-xl flex items-center justify-center">
@@ -65,13 +65,15 @@ export function BarebonesView() {
       <main className="max-w-4xl mx-auto px-6 py-12">
         {activeSection === "about" && (
           <section className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-david-teal/20 rounded-lg">
-                <User className="w-6 h-6 text-david-teal" />
+            <div className="flex justify-center">
+              <div className="w-52 h-52 rounded-full border-2 border-david-teal/40 overflow-hidden">
+                <img
+                  src="/img/notsupercropped.jpg"
+                  alt="David Tan"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: "center 20%" }}
+                />
               </div>
-              <h2 className="text-2xl font-semibold text-david-blue font-sf-pro">
-                About David
-              </h2>
             </div>
             <p className="text-david-gray leading-relaxed">
               Hiya! I&apos;m David Tan, a highly motivated, multilingual, and
@@ -85,14 +87,14 @@ export function BarebonesView() {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {[
-                  "React",
-                  "Next.js",
-                  "Three.js",
-                  "TypeScript",
-                  "Node.js",
                   "Python",
-                  "Blender",
-                  "Figma",
+                  "Java",
+                  "SQL",
+                  "PostgreSQL",
+                  "Django",
+                  "HTML",
+                  "CSS",
+                  "Next.js",
                 ].map((skill) => (
                   <span
                     key={skill}

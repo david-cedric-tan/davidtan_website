@@ -14,11 +14,11 @@ export default function Home() {
       {/* Toggle stays mounted across view switches so animations always play.
           stopPropagation prevents clicks from leaking into the 3D canvas. */}
       <div
-        className="fixed top-[21px] right-8 z-50"
-        onPointerDown={e => e.stopPropagation()}
-        onPointerUp={e => e.stopPropagation()}
-        onPointerMove={e => e.stopPropagation()}
-        onClick={e => e.stopPropagation()}
+        className="fixed top-[10px] right-[10px] z-50"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onPointerMove={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <WimbledonToggle />
       </div>

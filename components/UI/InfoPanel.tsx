@@ -13,6 +13,15 @@ export function InfoPanel() {
       icon: <User className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
+          <div className="flex justify-center">
+            <div className="w-44 h-44 rounded-full border-2 border-david-teal/40 overflow-hidden">
+              <img
+                src="/img/notsupercropped.jpg"
+                alt="David Tan"
+                className="w-full h-full object-cover" style={{ objectPosition: "center 20%" }}
+              />
+            </div>
+          </div>
           <p className="text-david-gray leading-relaxed">
             Hiya! I'm David Tan, a highly motivated, multilingual, and adaptable
             4th year student with a passion for emerging technologies in
@@ -23,14 +32,14 @@ export function InfoPanel() {
             <h4 className="text-white font-semibold">Skills & Technologies</h4>
             <div className="flex flex-wrap gap-2">
               {[
-                "React",
-                "Next.js",
-                "Three.js",
-                "TypeScript",
-                "Node.js",
                 "Python",
-                "Blender",
-                "Figma",
+                "Java",
+                "SQL",
+                "PostgreSQL",
+                "Django",
+                "HTML",
+                "CSS",
+                "Next.js",
               ].map((skill) => (
                 <span
                   key={skill}
