@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCT Equity – Bloomberg Mock</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a1a1a;font-family:'JetBrains Mono',monospace;padding:20px;}
+
+.theme-bar{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 16px;align-items:center;}
+.tgl{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#666;padding:0 4px;}
+.tbtn{font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 10px;border-radius:99px;border:0.5px solid #444;background:transparent;cursor:pointer;color:#888;transition:all 0.15s;}
+.tbtn:hover{border-color:#888;color:#ccc;}
+.tbtn.active{background:#fff;color:#000;border-color:#fff;}
+
+.mock-wrap{display:flex;justify-content:center;}
+.mock{width:820px;border-radius:4px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.7);}
+
+.stat-row{display:flex;justify-content:space-between;margin-bottom:3px;}
+.bullet{font-size:7.5px;line-height:1.65;padding-left:8px;margin-bottom:2px;position:relative;}
+.bullet::before{content:'·';position:absolute;left:0;}
+.role-block{margin-bottom:10px;}
+.role-co{font-size:9px;font-weight:700;}
+.role-title{font-size:8px;margin:1px 0 1px;}
+.role-date{font-size:7px;margin-bottom:4px;}
+.hdiv{height:1px;margin:8px 0;}
+.panel-section{margin-bottom:10px;}
+.sec-label{font-size:8px;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;}
+
+/* Tab pane switching */
+.tab-pane{display:none;height:100%;padding:12px;}
+.tab-pane.active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <span class="tgl">Bloomberg</span>
+  <button class="tbtn" onclick="T('bloomberg',this)">Original</button>
+  <button class="tbtn" onclick="T('bloomberg1',this)">B1 · Gold</button>
+  <button class="tbtn" onclick="T('bloomberg2',this)">B2 · Ember</button>
+  <button class="tbtn active" onclick="T('bloomberg3',this)">B3 · Charcoal ★</button>
+  <button class="tbtn" onclick="T('hybrid',this)">+ Linen</button>
+  <span class="tgl">Light</span>
+  <button class="tbtn" onclick="T('linen',this)">Warm Linen</button>
+  <button class="tbtn" onclick="T('applegray',this)">Apple Gray</button>
+  <button class="tbtn" onclick="T('morningdew',this)">Morning Dew</button>
+  <button class="tbtn" onclick="T('parchment',this)">Parchment</button>
+  <button class="tbtn" onclick="T('wimbledon',this)">Wimbledon</button>
+  <span class="tgl">Dark</span>
+  <button class="tbtn" onclick="T('catppuccin',this)">Catppuccin</button>
+  <button class="tbtn" onclick="T('tokyo',this)">Tokyo Night</button>
+  <button class="tbtn" onclick="T('nord',this)">Nord</button>
+</div>
+
+<div class="mock-wrap"><div class="mock" id="mock">
+
+  <!-- Top bar -->
+  <div id="top-bar" style="display:flex;align-items:center;gap:8px;height:22px;padding:0 8px;">
+    <span id="bb-badge" style="padding:1px 6px;font-size:9px;font-weight:700;">BLOOMBERG</span>
+    <span id="bb-label" style="font-size:9px;">TERMINAL</span>
+    <div style="flex:1;"></div>
+    <span id="bb-date" style="font-size:9px;">MON 02 JUN 2026</span>
+    <span id="bb-time" style="font-size:9px;">13:28:44</span>
+  </div>
+
+  <!-- Function tab bar -->
+  <div id="tab-bar" style="display:flex;height:22px;">
+    <div id="tab-rmap" style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;">RMAP</div>
+    <div id="tab-des"  style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;font-weight:700;">DES</div>
+    <div id="tab-cv"   style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;">CV</div>
+    <div id="tab-exp"  style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;">EXP</div>
+    <div id="tab-skl"  style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;">SKL</div>
+    <div id="tab-proj" style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-right-width:1px;border-right-style:solid;">PROJ</div>
+    <div style="flex:1;"></div>
+    <div id="tab-ds" style="padding:0 10px;font-size:9px;display:flex;align-items:center;border-left-width:1px;border-left-style:solid;">DS Candidate Search</div>
+  </div>
+
+  <!-- Ticker row -->
+  <div id="ticker-row" style="display:flex;align-items:center;gap:10px;padding:0 10px;height:26px;">
+    <span id="tk-sym" style="font-weight:700;font-size:13px;">DCT</span>
+    <span id="tk-ex"  style="font-size:10px;">SYD</span>
+    <span id="tk-price" style="font-size:11px;font-weight:700;">Penultimate Year</span>
+    <span id="tk-chg"  style="font-size:9px;">↑ 3 Roles · 2 Projects · 2 Extracurriculars</span>
+    <div style="flex:1;"></div>
+    <span id="tk-uni" style="font-size:9px;">University of Sydney</span>
+    <span id="tk-deg" style="font-size:9px;margin-left:10px;">BAdvComp / BCom</span>
+    <span id="tk-yr"  style="font-size:9px;margin-left:10px;">2022 – 2027</span>
+  </div>
+
+  <!-- Sub-tab bar (clickable, controls right panel) -->
+  <div id="sub-tabs" style="display:flex;height:24px;border-bottom-width:1px;border-bottom-style:solid;">
+    <div class="stab active" id="st-profile"  onclick="switchTab('profile')"  style="padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;font-weight:700;">Profile</div>
+    <div class="stab"        id="st-exp"      onclick="switchTab('exp')"      style="padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;">Experience</div>
+    <div class="stab"        id="st-projects" onclick="switchTab('projects')" style="padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;">Projects</div>
+    <div class="stab"        id="st-extra"    onclick="switchTab('extra')"    style="padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;">Extracurriculars</div>
+  </div>
+
+  <!-- Main layout: fixed left profile + right panel area -->
+  <div id="content" style="display:grid;grid-template-columns:2fr 3fr;gap:1px;height:372px;">
+
+    <!-- ═══ LEFT: always-visible profile ═══ -->
+    <div id="p-left" style="padding:12px;overflow:hidden;height:372px;">
+
+      <!-- Photo + name -->
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;">
+        <img src="/img/main_prof.jpg" alt="David Tan" id="photo"
+          style="width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center top;flex-shrink:0;border-width:2px;border-style:solid;" />
+        <div>
+          <div id="co-name"  style="font-weight:700;font-size:10px;margin-bottom:2px;line-height:1.3;">DAVID CEDRIC CHAN TAN</div>
+          <div id="co-role"  style="font-size:7.5px;margin-bottom:3px;">Software Development &amp; Finance</div>
+          <div id="co-loc"   style="font-size:7.5px;">📍 Sydney, Australia</div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div id="co-desc" style="font-size:7.5px;line-height:1.65;margin-bottom:10px;">
+        Penultimate-year student (BAdvComp / BCom) with experience in data transformation, backend development, and cloud technologies. Building technology-driven solutions at the intersection of software engineering and financial markets.
+      </div>
+
+      <!-- Divider -->
+      <div class="hdiv" id="dv1"></div>
+
+      <!-- Education -->
+      <div class="sec-label" id="edu-hdr">EDUCATION</div>
+      <div style="margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:1px;">
+          <span id="edu-deg" style="font-size:8px;font-weight:700;">BAdvComp + BCom</span>
+          <span id="edu-yr"  style="font-size:7px;">2022 – 2027</span>
+        </div>
+        <div id="edu-inst" style="font-size:7.5px;margin-bottom:1px;">University of Sydney</div>
+        <div id="edu-maj"  style="font-size:7.5px;">Major: Software Dev &amp; Finance</div>
+      </div>
+
+      <div class="hdiv" id="dv2"></div>
+
+      <!-- Key stats -->
+      <div class="sec-label" id="ks-hdr">KEY STATS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;margin-bottom:8px;">
+        <div class="stat-row"><span id="ks1k" style="font-size:7.5px;">Status</span><span id="ks1v" style="font-size:7.5px;">Penultimate</span></div>
+        <div class="stat-row"><span id="ks2k" style="font-size:7.5px;">Grad</span><span id="ks2v" style="font-size:7.5px;">Nov 2027</span></div>
+        <div class="stat-row"><span id="ks3k" style="font-size:7.5px;">Work Auth</span><span id="ks3v" style="font-size:7.5px;">AUS · PHL</span></div>
+        <div class="stat-row"><span id="ks4k" style="font-size:7.5px;">Roles</span><span id="ks4v" style="font-size:7.5px;">3 positions</span></div>
+      </div>
+
+      <!-- Languages -->
+      <div id="lang-hdr" class="sec-label" style="margin-bottom:3px;">LANGUAGES</div>
+      <div id="lang-list" style="font-size:7.5px;line-height:1.9;">
+        English<br>Mandarin Chinese<br>Tagalog
+      </div>
+    </div>
+
+    <!-- ═══ RIGHT: tab-switched panels ═══ -->
+    <div id="p-right" style="height:372px;position:relative;overflow:hidden;">
+
+      <!-- PROFILE tab -->
+      <div class="tab-pane active" id="pane-profile">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;height:100%;margin:-12px;">
+          <!-- Skills column -->
+          <div id="pane-skills-col" style="padding:12px;">
+            <div class="sec-label" id="skl-hdr">SKILLS</div>
+            <div class="panel-section">
+              <div id="sk-prog-lbl" style="font-size:7px;font-weight:700;margin-bottom:2px;">PROGRAMMING</div>
+              <div id="sk-prog" style="font-size:7.5px;line-height:1.7;">Python · Java · SQL<br>PostgreSQL · R</div>
+            </div>
+            <div class="hdiv" id="dv-sk1"></div>
+            <div class="panel-section" style="margin-top:6px;">
+              <div id="sk-fw-lbl" style="font-size:7px;font-weight:700;margin-bottom:2px;">FRAMEWORKS</div>
+              <div id="sk-fw" style="font-size:7.5px;line-height:1.7;">Django · Django ORM<br>Django REST Framework</div>
+            </div>
+            <div class="hdiv" id="dv-sk2"></div>
+            <div class="panel-section" style="margin-top:6px;">
+              <div id="sk-tools-lbl" style="font-size:7px;font-weight:700;margin-bottom:2px;">TOOLS</div>
+              <div id="sk-tools" style="font-size:7.5px;line-height:1.7;">Git · Postman<br>Jenkins CI/CD · Jira</div>
+            </div>
+            <div class="hdiv" id="dv-sk3"></div>
+            <div class="panel-section" style="margin-top:6px;">
+              <div id="sk-cloud-lbl" style="font-size:7px;font-weight:700;margin-bottom:2px;">CLOUD</div>
+              <div id="sk-cloud" style="font-size:7.5px;line-height:1.7;">AWS — EC2 · ALB · ASG<br>S3 · RDS · CloudWatch</div>
+            </div>
+            <div class="hdiv" id="dv-sk4"></div>
+            <div class="panel-section" style="margin-top:6px;">
+              <div id="sk-pm-lbl" style="font-size:7px;font-weight:700;margin-bottom:2px;">METHODOLOGY</div>
+              <div id="sk-pm" style="font-size:7.5px;line-height:1.7;">Scrum · Agile</div>
+            </div>
+          </div>
+          <!-- Contact + coursework column -->
+          <div id="pane-contact-col" style="padding:12px;">
+            <div class="sec-label" id="cont-hdr">CONTACT</div>
+            <div id="c-email" style="font-size:7.5px;margin-bottom:3px;">davidcedricctan@gmail.com</div>
+            <div id="c-phone" style="font-size:7.5px;margin-bottom:3px;">+61 478 505 217</div>
+            <div id="c-gh"    style="font-size:7.5px;margin-bottom:3px;">github.com/ANTiDOTE-21</div>
+            <div id="c-li"    style="font-size:7.5px;margin-bottom:10px;">linkedin.com/in/davidctan</div>
+            <div class="hdiv" id="dv-cw"></div>
+            <div class="sec-label" id="cw-hdr" style="margin-top:8px;">KEY COURSEWORK</div>
+            <div id="cw1" class="bullet">Data Structures &amp; Algorithms</div>
+            <div id="cw2" class="bullet">Data &amp; Information Management</div>
+            <div id="cw3" class="bullet">Software Dev Capstone Project</div>
+            <div id="cw4" class="bullet">Web Information Systems</div>
+            <div id="cw5" class="bullet">Business Consulting Practicum</div>
+            <div id="cw6" class="bullet">AWS Cloud Computing (In Progress)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE tab -->
+      <div class="tab-pane" id="pane-exp">
+        <div class="sec-label" id="exp-hdr">WORK EXPERIENCE</div>
+
+        <div class="role-block">
+          <div style="display:flex;justify-content:space-between;">
+            <span id="e1co" class="role-co">PwC Philippines (Isla Lipana &amp; Co.)</span>
+            <span id="e1loc" style="font-size:7px;">Makati, Philippines</span>
+          </div>
+          <div id="e1ro" class="role-title">Digital Solutions Development Intern</div>
+          <div id="e1dt" class="role-date">Jan 2026 – Feb 2026</div>
+          <div id="e1d1" class="bullet">Contributed to a large-scale payroll data migration (MS Access → SQL Server) by translating 90+ queries handling Workday HR data into production-ready T-SQL scripts</div>
+          <div id="e1d2" class="bullet">Resolved cross-platform compatibility issues — date conversions, NULL-handling and conditional logic with ISNULL and CASE statements</div>
+          <div id="e1d3" class="bullet">Wrote CREATE TABLE scripts for 5 employee payroll tables, standardising field names and producing detailed field-mapping documentation</div>
+        </div>
+
+        <div class="hdiv" id="dv-e1"></div>
+
+        <div class="role-block" style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;">
+            <span id="e2co" class="role-co">BIOTech Futures</span>
+            <span id="e2loc" style="font-size:7px;">USYD Capstone</span>
+          </div>
+          <div id="e2ro" class="role-title">Backend Software Engineer</div>
+          <div id="e2dt" class="role-date">Aug 2025 – Nov 2025</div>
+          <div id="e2d1" class="bullet">Designed a PostgreSQL backend schema + Django ORM supporting roles, groups, events, resources, and audit logging for a production-scale mentoring platform</div>
+          <div id="e2d2" class="bullet">Implemented RBAC and core backend APIs — role grant/revoke, full CRUD, filtering, pagination, and permissions enforcement</div>
+          <div id="e2d3" class="bullet">Integrated Azure Blob Storage for secure file uploads; increased test coverage from ~25% to ~72% with Postman collections and coverage reports</div>
+        </div>
+
+        <div class="hdiv" id="dv-e2"></div>
+
+        <div class="role-block" style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;">
+            <span id="e3co" class="role-co">JB – HiFi Limited</span>
+            <span id="e3loc" style="font-size:7px;">World Square, Sydney</span>
+          </div>
+          <div id="e3ro" class="role-title">Retail Salesperson</div>
+          <div id="e3dt" class="role-date">Jul 2023 – Jul 2024</div>
+          <div id="e3d1" class="bullet">Delivered tailored tech solutions across 8 product categories, consistently exceeding weekly targets up to AUD $30,000</div>
+          <div id="e3d2" class="bullet">Maintained Gold Star performance record across monthly KPIs</div>
+        </div>
+      </div>
+
+      <!-- PROJECTS tab -->
+      <div class="tab-pane" id="pane-projects">
+        <div class="sec-label" id="proj-hdr">PROJECTS</div>
+
+        <div class="role-block">
+          <div id="p1-name" class="role-co">Cloud PDF Processing Platform</div>
+          <div id="p1-tech" class="role-title">AWS · Python Flask</div>
+          <div id="p1d1" class="bullet">Implemented AWS infrastructure using EC2, S3, RDS, ALB, and Auto Scaling Groups to deploy a scalable PDF processing platform</div>
+          <div id="p1d2" class="bullet">Utilised CloudWatch to monitor CPU utilisation and evaluate Auto Scaling behaviour under varying workloads</div>
+        </div>
+
+        <div class="hdiv" id="dv-p1"></div>
+
+        <div class="role-block" style="margin-top:8px;">
+          <div id="p2-name" class="role-co">Secure Messaging Application</div>
+          <div id="p2-tech" class="role-title">Java · SQLite · TLS · HTTPS</div>
+          <div id="p2d1" class="bullet">Developed a secure messaging platform with HTTPS, TLS certificates, and encryption for end-to-end secure communication</div>
+          <div id="p2d2" class="bullet">Configured DuckDNS hosting to enable remote access and cross-network testing across team members</div>
+        </div>
+      </div>
+
+      <!-- EXTRACURRICULARS tab -->
+      <div class="tab-pane" id="pane-extra">
+        <div class="sec-label" id="ext-hdr">EXTRACURRICULARS</div>
+
+        <div class="role-block">
+          <div style="display:flex;justify-content:space-between;">
+            <span id="x1-org" class="role-co">OpenxAI Hack Node Australia</span>
+            <span id="x1-dt" style="font-size:7px;">Aug – Sep 2025</span>
+          </div>
+          <div id="x1-role" class="role-title">Hackathon Member</div>
+          <div id="x1d1" class="bullet">Co-designed and pitched Mood Messenger — an AI-powered social networking solution using emotion detection and gamified virtual economies</div>
+          <div id="x1d2" class="bullet">Addressed emotional miscommunication in digital interactions to improve community connection in real-time messaging</div>
+        </div>
+
+        <div class="hdiv" id="dv-x1"></div>
+
+        <div class="role-block" style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;">
+            <span id="x2-org" class="role-co">Enactus University of Sydney</span>
+            <span id="x2-dt" style="font-size:7px;">Aug 2023 – Jul 2025</span>
+          </div>
+          <div id="x2-role" class="role-title">Research &amp; Development Engineer</div>
+          <div id="x2d1" class="bullet">Contributed to sustainability startup development under Enactus USYD</div>
+          <div id="x2d2" class="bullet">Received the IBM Experience Day Pitching Prize</div>
+          <div id="x2d3" class="bullet">Participated in the 2024 EY-Enactus Mentorship Program</div>
+        </div>
+      </div>
+
+    </div><!-- /p-right -->
+  </div><!-- /content -->
+
+  <!-- Status bar -->
+  <div id="status-bar" style="height:18px;display:flex;align-items:center;gap:16px;padding:0 10px;border-top-width:1px;border-top-style:solid;">
+    <span id="sb1" style="font-size:8px;">DCT SYD Equity</span>
+    <span id="sb2" style="font-size:8px;">98) Full CV</span>
+    <span id="sb3" style="font-size:8px;">99) Contact</span>
+    <div style="flex:1;"></div>
+    <span id="sb4" style="font-size:8px;">davidcedricctan@gmail.com</span>
+  </div>
+
+</div></div><!-- /mock /mock-wrap -->
+
+<script>
+/* ── Tab switching ── */
+let currentTab = 'profile';
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + name).classList.add('active');
+  currentTab = name;
+  applyTabStyles();
+}
+
+/* ── Theme data ── */
+const TH={
+  bloomberg: {bg:'#0D0D0D',nBg:'#0D0D0D',nb:'#1E1E1E',ac:'#D04A02',tp:'#fff',ts:'#888',tm:'#444',sl:'#555',bd:'#2A2A2A',sf:'#161616',dark:true},
+  bloomberg1:{bg:'#0D0D16',nBg:'#0A0A12',nb:'#1A1A2E',ac:'#F5C518',tp:'#E8E8F0',ts:'#8888A8',tm:'#44445A',sl:'#5DCFFF',bd:'#22223A',sf:'#12121E',dark:true},
+  bloomberg2:{bg:'#0D0D0D',nBg:'#0D0D0D',nb:'#1E1E1E',ac:'#F07820',tp:'#fff',ts:'#999',tm:'#555',sl:'#666',bd:'#2A1A10',sf:'#180E08',dark:true},
+  bloomberg3:{bg:'#1B1B1C',nBg:'#000000',nb:'#2A2A2A',ac:'#FFA732',tp:'#FFFFFF',ts:'#77A4A8',tm:'#525050',sl:'#77A4A8',bd:'#525050',sf:'#262626',dark:true},
+  hybrid:    {bg:'#F7F3EE',nBg:'#0D0D0D',nb:'#222',ac:'#D04A02',tp:'#1A1A1A',ts:'#7A7068',tm:'#B0A898',sl:'#B0A898',bd:'#DDD5C8',sf:'#EDE8E0',dark:true},
+  linen:     {bg:'#F7F3EE',nBg:'#F7F3EE',nb:'#E8E2D8',ac:'#1A1A1A',tp:'#1A1A1A',ts:'#7A7068',tm:'#B0A898',sl:'#C0B8B0',bd:'#DDD5C8',sf:'#EDE8E0',dark:false},
+  applegray: {bg:'#F5F5F7',nBg:'#F5F5F7',nb:'#E5E5EA',ac:'#1D1D1F',tp:'#1D1D1F',ts:'#6E6E73',tm:'#AEAEB2',sl:'#C7C7CC',bd:'#D8D8DC',sf:'#EBEBF0',dark:false},
+  morningdew:{bg:'#F4F6F5',nBg:'#F4F6F5',nb:'#E2E8E4',ac:'#2A6E50',tp:'#111',ts:'#5A7068',tm:'#9AADA3',sl:'#B0C0B8',bd:'#D0DCD5',sf:'#E8EDEA',dark:false},
+  parchment: {bg:'#F8F6F0',nBg:'#F8F6F0',nb:'#EAE6DC',ac:'#8B6914',tp:'#1A1A1A',ts:'#6A6050',tm:'#B8B0A0',sl:'#C0B8A8',bd:'#DDD8CC',sf:'#EEEAE0',dark:false},
+  wimbledon: {bg:'#F3EFE6',nBg:'#F3EFE6',nb:'#DDD5C4',ac:'#1A5C38',tp:'#1A1A1A',ts:'#6B6357',tm:'#B0A898',sl:'#B0A898',bd:'#D4CBBA',sf:'#EDE7DA',dark:false},
+  catppuccin:{bg:'#1E1E2E',nBg:'#1E1E2E',nb:'#313244',ac:'#CBA6F7',tp:'#CDD6F4',ts:'#A6ADC8',tm:'#585B70',sl:'#585B70',bd:'#45475A',sf:'#313244',dark:true},
+  tokyo:     {bg:'#1A1B2E',nBg:'#1A1B2E',nb:'#24253E',ac:'#7AA2F7',tp:'#C0CAF5',ts:'#787C99',tm:'#565F89',sl:'#565F89',bd:'#32344A',sf:'#24253E',dark:true},
+  nord:      {bg:'#2E3440',nBg:'#2E3440',nb:'#3B4252',ac:'#88C0D0',tp:'#ECEFF4',ts:'#D8DEE9',tm:'#4C566A',sl:'#4C566A',bd:'#434C5E',sf:'#3B4252',dark:true},
+};
+let currentTheme = TH.bloomberg3;
+
+function s(id,prop,val){const e=document.getElementById(id);if(e)e.style[prop]=val;}
+function c(id,str){const e=document.getElementById(id);if(e)e.style.cssText=str;}
+
+function applyTabStyles() {
+  const t = currentTheme;
+  const tabs = ['profile','exp','projects','extra'];
+  tabs.forEach(name => {
+    const el = document.getElementById('st-' + name);
+    if (!el) return;
+    if (name === currentTab) {
+      el.style.cssText = `padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;font-weight:700;color:${t.ac};border-bottom:2px solid ${t.ac};`;
+    } else {
+      el.style.cssText = `padding:0 14px;font-size:9px;display:flex;align-items:center;cursor:pointer;color:${t.tm};border-bottom:2px solid transparent;`;
+    }
+  });
+}
+
+function T(key, btn) {
+  const t = TH[key];
+  currentTheme = t;
+  const acTxt = t.dark ? '#000' : '#fff';
+
+  document.getElementById('mock').style.background = t.bg;
+
+  // Top bar
+  c('top-bar',`background:${t.nBg};border-bottom:1px solid ${t.nb};display:flex;align-items:center;gap:8px;height:22px;padding:0 8px;`);
+  c('bb-badge',`background:${t.ac};color:${acTxt};padding:1px 6px;font-size:9px;font-weight:700;`);
+  s('bb-label','color',t.tm); s('bb-date','color',t.tm); s('bb-time','color',t.ac);
+
+  // Function tabs
+  c('tab-bar',`background:${t.nBg};border-bottom:1px solid ${t.nb};display:flex;height:22px;`);
+  ['rmap','cv','exp','skl','proj'].forEach(id=>c('tab-'+id,`color:${t.tm};border-right:1px solid ${t.nb};padding:0 10px;font-size:9px;display:flex;align-items:center;`));
+  c('tab-des',`background:${t.ac};color:${acTxt};font-weight:700;border-right:1px solid ${t.nb};padding:0 10px;font-size:9px;display:flex;align-items:center;`);
+  c('tab-ds',`color:${t.tm};border-left:1px solid ${t.nb};padding:0 10px;font-size:9px;display:flex;align-items:center;`);
+
+  // Ticker
+  c('ticker-row',`background:${t.dark?'#111':t.sf};display:flex;align-items:center;gap:10px;padding:0 10px;height:26px;`);
+  s('tk-sym','color',t.ac); s('tk-ex','color',t.tp);
+  c('tk-price',`font-size:11px;font-weight:700;color:${t.tp};`);
+  c('tk-chg',`font-size:9px;color:${t.ac};`);
+  s('tk-uni','color',t.tm); s('tk-deg','color',t.tm); s('tk-yr','color',t.tm);
+
+  // Sub-tab bar bg
+  c('sub-tabs',`background:${t.sf};border-bottom:1px solid ${t.bd};display:flex;height:24px;`);
+  applyTabStyles();
+
+  // Grid & panel bg
+  document.getElementById('content').style.background = t.bd;
+  s('p-left','background',t.bg);
+  s('p-right','background',t.bg);
+  // All tab panes
+  document.querySelectorAll('.tab-pane').forEach(p=>p.style.background=t.bg);
+
+  // inner 2-col bg
+  const sc=document.getElementById('pane-skills-col');
+  const cc=document.getElementById('pane-contact-col');
+  if(sc)sc.style.background=t.bg;
+  if(cc)cc.style.background=t.bg;
+  const inner=document.querySelector('#pane-profile>div');
+  if(inner){inner.style.background=t.bd;}
+
+  // Photo
+  s('photo','borderColor',t.ac);
+
+  // Left panel text
+  c('co-name',`color:${t.ac};font-weight:700;font-size:10px;margin-bottom:2px;line-height:1.3;`);
+  s('co-role','color',t.ts); s('co-loc','color',t.tm); s('co-desc','color',t.ts);
+  ['dv1','dv2'].forEach(id=>s(id,'background',t.bd));
+  s('edu-hdr','color',t.sl); s('edu-deg','color',t.tp); s('edu-yr','color',t.tm); s('edu-inst','color',t.tm); s('edu-maj','color',t.ts);
+  s('ks-hdr','color',t.sl);
+  for(let i=1;i<=4;i++){s('ks'+i+'k','color',t.tm);s('ks'+i+'v','color',t.tp);}
+  s('lang-hdr','color',t.sl);
+  s('lang-list','color',t.tp);
+
+  // Profile tab inner
+  s('skl-hdr','color',t.sl);
+  ['sk-prog-lbl','sk-fw-lbl','sk-tools-lbl','sk-cloud-lbl','sk-pm-lbl'].forEach(id=>s(id,'color',t.sl));
+  ['sk-prog','sk-fw','sk-tools','sk-cloud','sk-pm'].forEach(id=>s(id,'color',t.ts));
+  ['dv-sk1','dv-sk2','dv-sk3','dv-sk4'].forEach(id=>s(id,'background',t.bd));
+  s('cont-hdr','color',t.sl); s('cw-hdr','color',t.sl); s('dv-cw','background',t.bd);
+  ['c-email','c-gh','c-li'].forEach(id=>s(id,'color',t.ac));
+  s('c-phone','color',t.tp);
+  ['cw1','cw2','cw3','cw4','cw5','cw6'].forEach(id=>s(id,'color',t.ts));
+
+  // Experience tab
+  s('exp-hdr','color',t.sl);
+  ['dv-e1','dv-e2'].forEach(id=>s(id,'background',t.bd));
+  ['e1co','e2co','e3co'].forEach(id=>s(id,'color',t.tp));
+  ['e1loc','e2loc','e3loc'].forEach(id=>s(id,'color',t.tm));
+  ['e1ro','e2ro','e3ro'].forEach(id=>s(id,'color',t.ac));
+  ['e1dt','e2dt','e3dt'].forEach(id=>s(id,'color',t.tm));
+  ['e1d1','e1d2','e1d3','e2d1','e2d2','e2d3','e3d1','e3d2'].forEach(id=>s(id,'color',t.ts));
+
+  // Projects tab
+  s('proj-hdr','color',t.sl); s('dv-p1','background',t.bd);
+  ['p1-name','p2-name'].forEach(id=>s(id,'color',t.tp));
+  ['p1-tech','p2-tech'].forEach(id=>s(id,'color',t.ac));
+  ['p1d1','p1d2','p2d1','p2d2'].forEach(id=>s(id,'color',t.ts));
+
+  // Extracurriculars tab
+  s('ext-hdr','color',t.sl); s('dv-x1','background',t.bd);
+  ['x1-org','x2-org'].forEach(id=>s(id,'color',t.tp));
+  ['x1-dt','x2-dt'].forEach(id=>s(id,'color',t.tm));
+  ['x1-role','x2-role'].forEach(id=>s(id,'color',t.ac));
+  ['x1d1','x1d2','x2d1','x2d2','x2d3'].forEach(id=>s(id,'color',t.ts));
+
+  // All role-co, role-title, role-date, bullet, sec-label, hdiv via class
+  document.querySelectorAll('.role-co').forEach(e=>e.style.color=t.tp);
+  document.querySelectorAll('.role-title').forEach(e=>e.style.color=t.ac);
+  document.querySelectorAll('.role-date').forEach(e=>e.style.color=t.tm);
+  document.querySelectorAll('.bullet').forEach(e=>e.style.color=t.ts);
+  document.querySelectorAll('.sec-label').forEach(e=>e.style.color=t.sl);
+  document.querySelectorAll('.hdiv').forEach(e=>e.style.background=t.bd);
+
+  // Status bar
+  c('status-bar',`background:${t.nBg};border-top:1px solid ${t.nb};height:18px;display:flex;align-items:center;gap:16px;padding:0 10px;`);
+  s('sb1','color',t.tm); s('sb2','color',t.ac); s('sb3','color',t.ts); s('sb4','color',t.tm);
+
+  // Theme buttons
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+
+T('bloomberg3', document.querySelectorAll('.tbtn')[3]);
+</script>
+</body>
+</html>

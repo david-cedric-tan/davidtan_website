@@ -6,6 +6,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Room } from "@/components/3D/Room";
 import { Navigation } from "@/components/UI/Navigation";
 import { InfoPanel } from "@/components/UI/InfoPanel";
+import { WimbledonToggle } from "@/components/UI/WimbledonToggle";
 import { useStore } from "@/store/useStore";
 
 export function View3D() {
@@ -68,6 +69,17 @@ export function View3D() {
       </Canvas>
 
       {activePanel && <InfoPanel />}
+
+      {/* Toggle to return to Bloomberg view */}
+      <div
+        className="fixed top-[10px] right-[10px] z-50"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onPointerMove={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <WimbledonToggle />
+      </div>
     </main>
   );
 }

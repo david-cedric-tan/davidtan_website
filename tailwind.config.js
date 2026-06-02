@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        "sf-pro": ["SF Pro Display", "system-ui", "sans-serif"],
+        // "sf-pro": ["SF Pro Display", "system-ui", "sans-serif"],
+        manrope: ["Manrope", "sans-serif"],
       },
       colors: {
         "david-blue": "#1e3a8a",

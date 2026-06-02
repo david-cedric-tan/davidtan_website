@@ -9,6 +9,10 @@ import { Monitor } from "./Monitor";
 import { VinylRecord } from "./VinylRecord";
 import { FloatingElements } from "./FloatingElements";
 import { UWMonitor } from "./UltraWideMonitor";
+import { BloombergScreen, BloombergTheme } from "./BloombergScreen";
+
+// Change this to preview different themes on the 3D monitor screen
+const MONITOR_THEME: BloombergTheme = "bloomberg3";
 
 export function Room() {
   const roomRef = useRef<Group>(null);
@@ -100,6 +104,9 @@ export function Room() {
         rotation={[4.7, 0, 6.3]}
       />
       <VinylRecord position={[3, -0.1, -1]} />
+
+      {/* Bloomberg terminal displayed on the monitor screen */}
+      <BloombergScreen themeName={MONITOR_THEME} />
 
       {/* Ambient light behind monitor - warm yellow/orange */}
       <pointLight position={[0, -0.13, -2.5]} intensity={1.5} color="#FFE5B4" />
